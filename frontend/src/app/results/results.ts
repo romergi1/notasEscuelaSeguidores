@@ -16,6 +16,8 @@ export class Results {
 
   private readonly APPROVAL = 7;
   private readonly NOTA_COL = 'NotaFinal';
+  // Columnas que se consideran datos personales del alumno
+  private readonly PERSONALES = ['Apellido', 'Nombre', 'CorreoElectronico'];
 
   constructor() {
     const nav = this.router.getCurrentNavigation();
@@ -37,6 +39,16 @@ export class Results {
 
   headers = computed(() => this.data()?.headers ?? []);
   alumno = computed(() => this.data()?.alumno ?? {});
+
+  // Headers que son datos personales, respetando el orden definido
+  datosPersonales = computed<string[]>(() =>
+    this.headers().filter((h) => this.PERSONALES.includes(h))
+  );
+
+  // Headers que son notas de exámenes (todo lo que no es dato personal)
+  notas = computed<string[]>(() =>
+    this.headers().filter((h) => !this.PERSONALES.includes(h))
+  );
 
   notaFinal = computed<number>(() => {
     const value = this.alumno()[this.NOTA_COL];
