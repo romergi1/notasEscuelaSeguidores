@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    container_name: seguidores-backend
+    restart: unless-stopped
+    # El puerto interno 3000 se expone también al host por si quieres probar la API directamente
+    ports:
+      - "3800:3000"
+
+  frontend:
+    build: ./frontend
+    container_name: seguidores-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "2807:80"

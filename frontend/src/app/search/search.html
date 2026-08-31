@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <div class="card card-clean p-4 p-md-5">
+      <h2 class="h5 mb-4">Buscar alumno</h2>
+
+      <div class="mb-3">
+        <label for="correo" class="form-label">Correo electrónico</label>
+        <input
+          id="correo"
+          type="email"
+          class="form-control"
+          placeholder="nombre@correo.com"
+          [ngModel]="correo()"
+          (ngModelChange)="correo.set($event)"
+          (keyup.enter)="buscar()"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="modulo" class="form-label">Módulo</label>
+        <select
+          id="modulo"
+          class="form-select"
+          [ngModel]="modulo()"
+          (ngModelChange)="modulo.set($event)"
+        >
+          <option value="" disabled>Selecciona un módulo…</option>
+          <option value="1">Módulo 1 — Primer Módulo</option>
+          <option value="2">Módulo 2 — Segundo Módulo</option>
+        </select>
+      </div>
+
+      @if (errorMsg()) {
+        <div class="alert alert-danger py-2" role="alert">
+          {{ errorMsg() }}
+        </div>
+      }
+
+      <button class="btn btn-brand w-100 py-2" (click)="buscar()" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm me-2"></span> Consultando…
+        } @else {
+          Consultar notas
+        }
+      </button>
+    </div>
+  </div>
+</div>

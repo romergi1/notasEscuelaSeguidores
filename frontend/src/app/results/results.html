@@ -1,0 +1,55 @@
+<div class="card card-clean p-4 p-md-5">
+  <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+    <div>
+      <h2 class="h5 mb-1">Resultados del alumno</h2>
+      <p class="text-secondary mb-0">
+        {{ correo() }} · Módulo {{ modulo() }}
+      </p>
+    </div>
+    <button class="btn btn-outline-secondary" (click)="volver()">
+      ← Consultar otro alumno
+    </button>
+  </div>
+
+  <div class="table-wrap">
+    <table class="table table-bordered align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          @for (header of headers(); track header) {
+            <th scope="col" class="text-nowrap">{{ header }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          @for (header of headers(); track header) {
+            @if (isNotaColumn(header)) {
+              <td
+                class="text-center"
+                [class.cell-approved]="aprobado()"
+                [class.cell-failed]="!aprobado()"
+              >
+                {{ cellValue(header) }}
+              </td>
+            } @else {
+              <td class="text-nowrap">{{ cellValue(header) }}</td>
+            }
+          }
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4">
+    @if (aprobado()) {
+      <div class="alert alert-success mb-0" role="alert">
+        <strong>Aprobado.</strong> La nota final es {{ notaFinal() }}.
+      </div>
+    } @else {
+      <div class="alert alert-danger mb-0" role="alert">
+        <strong>Reprobado.</strong> La nota final es {{ notaFinal() }}.
+        La nota de aprobación es mayor o igual a 7.
+      </div>
+    }
+  </div>
+</div>

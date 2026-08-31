@@ -1,0 +1,46 @@
+:root {
+  --brand: #2b6777;
+  --brand-soft: #52ab98;
+  --bg: #f2f7f9;
+}
+body {
+  background-color: var(--bg);
+  min-height: 100vh;
+}
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.brand-title {
+  color: var(--brand);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.card-clean {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(43, 103, 119, 0.08);
+}
+.btn-brand {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+.btn-brand:hover {
+  background-color: #24515e;
+  border-color: #24515e;
+  color: #fff;
+}
+.cell-approved {
+  background-color: #d1e7dd !important;
+  color: #0f5132;
+  font-weight: 700;
+}
+.cell-failed {
+  background-color: #f7d6e0 !important;
+  color: #842029;
+  font-weight: 700;
+}
+.table-wrap {
+  overflow-x: auto;
+}

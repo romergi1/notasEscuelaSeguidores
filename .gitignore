@@ -1,0 +1,8 @@
+﻿# Node
+**/node_modules/
+# Angular build
+frontend/dist/
+frontend/.angular/
+# Sistema
+.DS_Store
+Thumbs.db
