@@ -6,3 +6,6 @@ frontend/.angular/
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Llave privada SSH - NUNCA subir
+notas-key.pem
