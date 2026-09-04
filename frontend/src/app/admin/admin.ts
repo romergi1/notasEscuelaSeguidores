@@ -14,6 +14,7 @@ export class Admin {
 
   // Campos que se consideran datos personales (mismo criterio que la pantalla de resultados)
   private readonly PERSONALES = ['Apellido', 'Nombre', 'CorreoElectronico'];
+  private readonly NOTA_FINAL = 'NotaFinal';
 
   vista = signal<Vista>(this.service.logueado ? 'buscar' : 'login');
 
@@ -38,7 +39,10 @@ export class Admin {
   loading = signal(false);
 
   datosPersonales = computed(() => this.formHeaders().filter((h) => this.PERSONALES.includes(h)));
-  notas = computed(() => this.formHeaders().filter((h) => !this.PERSONALES.includes(h)));
+  // Columnas de exámenes: todo lo que no es dato personal ni la nota final, en el orden original del Excel
+  examenes = computed(() =>
+    this.formHeaders().filter((h) => !this.PERSONALES.includes(h) && h !== this.NOTA_FINAL)
+  );
 
   // --- Acciones: login ---
 
@@ -132,6 +136,32 @@ export class Admin {
 
   actualizarCampo(header: string, valor: string): void {
     this.formData.update((actual) => ({ ...actual, [header]: valor }));
+  }
+
+  calcularPromedio(): void {
+    this.formError.set('');
+
+    // Solo se promedian las columnas de examen que tengan un valor numérico cargado
+    const numeros: number[] = [];
+    for (const h of this.examenes()) {
+      const raw = this.formData()[h];
+      if (raw === '' || raw === undefined || raw === null) {
+        continue;
+      }
+      const num = Number(raw);
+      if (!isNaN(num)) {
+        numeros.push(num);
+      }
+    }
+
+    if (!numeros.length) {
+      this.formError.set('No hay notas de exámenes para calcular el promedio.');
+      return;
+    }
+
+    const promedio = numeros.reduce((a, b) => a + b, 0) / numeros.length;
+    const redondeado = Math.round(promedio * 100) / 100;
+    this.actualizarCampo(this.NOTA_FINAL, redondeado.toString());
   }
 
   guardar(): void {
