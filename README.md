@@ -145,6 +145,40 @@ docker compose down               # detener
 
 ---
 
+## Panel de administración (editar los Excel desde la web)
+
+Hay una pantalla de administración en `/admin` (link "Administración" bajo el
+título) donde, con una contraseña, se puede buscar un alumno por correo y
+módulo, editar sus datos, eliminarlo o crear uno nuevo. Los cambios se
+guardan directamente en el archivo `.xlsx` correspondiente — no hace falta
+reconstruir los contenedores.
+
+### Configurar la contraseña
+
+1. Copia `.env.example` a `.env` (en la carpeta `app/`, junto a
+   `docker-compose.yml`) y define `ADMIN_PASSWORD`:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Levanta los contenedores normalmente (`docker compose up --build`).
+   Docker Compose toma automáticamente el archivo `.env`.
+
+Si `ADMIN_PASSWORD` no está definida, el login del panel devuelve un error
+y no se puede entrar — es intencional, para no dejar el panel abierto por
+descuido.
+
+### Notas sobre la sesión y los respaldos
+
+- La sesión de administrador dura 8 horas y se invalida si el contenedor del
+  backend se reinicia (a menos que también definas `JWT_SECRET` fijo en `.env`).
+- Antes de cada guardado, el backend hace una copia del Excel en
+  `backend/database/backups/` (no se sube a git). Sirve para recuperar datos
+  si una edición sale mal.
+
+---
+
 ## Solución de problemas
 
 - **El puerto 8080 o 3000 ya está en uso:** edita `docker-compose.yml` y cambia

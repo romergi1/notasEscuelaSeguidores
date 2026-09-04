@@ -1,0 +1,158 @@
+@if (vista() === 'login') {
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-5">
+      <div class="card card-clean p-4 p-md-5">
+        <h2 class="h5 mb-4">Acceso de administrador</h2>
+
+        <div class="mb-4">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            (keyup.enter)="login()"
+          />
+        </div>
+
+        @if (loginError()) {
+          <div class="alert alert-danger py-2" role="alert">{{ loginError() }}</div>
+        }
+
+        <button class="btn btn-brand w-100 py-2" (click)="login()" [disabled]="loading()">
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-2"></span> Ingresando…
+          } @else {
+            Ingresar
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (vista() === 'buscar') {
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="card card-clean p-4 p-md-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="h5 mb-0">Buscar / crear alumno</h2>
+          <button class="btn btn-sm btn-outline-secondary" (click)="cerrarSesion()">Cerrar sesión</button>
+        </div>
+
+        <div class="mb-3">
+          <label for="correoBusqueda" class="form-label">Correo electrónico</label>
+          <input
+            id="correoBusqueda"
+            type="email"
+            class="form-control"
+            placeholder="nombre@correo.com"
+            [ngModel]="correoBusqueda()"
+            (ngModelChange)="correoBusqueda.set($event)"
+            (keyup.enter)="buscar()"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="moduloBusqueda" class="form-label">Módulo</label>
+          <select
+            id="moduloBusqueda"
+            class="form-select"
+            [ngModel]="moduloBusqueda()"
+            (ngModelChange)="moduloBusqueda.set($event)"
+          >
+            <option value="" disabled>Selecciona un módulo…</option>
+            <option value="1">Módulo 1 — Primer Módulo</option>
+            <option value="2">Módulo 2 — Segundo Módulo</option>
+          </select>
+        </div>
+
+        @if (buscarError()) {
+          <div class="alert alert-danger py-2" role="alert">{{ buscarError() }}</div>
+        }
+        @if (buscarInfo()) {
+          <div class="alert alert-info py-2" role="alert">{{ buscarInfo() }}</div>
+        }
+
+        <button class="btn btn-brand w-100 py-2" (click)="buscar()" [disabled]="loading()">
+          @if (loading()) {
+            <span class="spinner-border spinner-border-sm me-2"></span> Buscando…
+          } @else {
+            Buscar alumno
+          }
+        </button>
+        <p class="text-secondary small mt-3 mb-0">
+          Si el correo no existe en el módulo seleccionado, se abrirá un formulario en blanco para crear al alumno.
+        </p>
+      </div>
+    </div>
+  </div>
+}
+
+@if (vista() === 'form') {
+  <div class="card card-clean p-4 p-md-5">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+      <div>
+        <h2 class="h5 mb-1">{{ esNuevo() ? 'Nuevo alumno' : 'Editar alumno' }}</h2>
+        <p class="text-secondary mb-0">Módulo {{ moduloBusqueda() }}</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" (click)="volverABuscar()">← Volver a la búsqueda</button>
+        <button class="btn btn-outline-secondary" (click)="cerrarSesion()">Cerrar sesión</button>
+      </div>
+    </div>
+
+    @if (formError()) {
+      <div class="alert alert-danger py-2" role="alert">{{ formError() }}</div>
+    }
+    @if (formOk()) {
+      <div class="alert alert-success py-2" role="alert">{{ formOk() }}</div>
+    }
+
+    <h3 class="h6 text-secondary mb-2">Datos personales</h3>
+    <div class="row mb-4">
+      @for (header of datosPersonales(); track header) {
+        <div class="col-12 col-md-6 mb-3">
+          <label class="form-label">{{ header }}</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngModel]="formData()[header]"
+            (ngModelChange)="actualizarCampo(header, $event)"
+          />
+        </div>
+      }
+    </div>
+
+    <h3 class="h6 text-secondary mb-2">Notas</h3>
+    <div class="row mb-4">
+      @for (header of notas(); track header) {
+        <div class="col-12 col-md-4 mb-3">
+          <label class="form-label">{{ header }}</label>
+          <input
+            type="text"
+            class="form-control"
+            [ngModel]="formData()[header]"
+            (ngModelChange)="actualizarCampo(header, $event)"
+          />
+        </div>
+      }
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+      <button class="btn btn-brand px-4" (click)="guardar()" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner-border spinner-border-sm me-2"></span> Guardando…
+        } @else {
+          Guardar cambios
+        }
+      </button>
+      @if (!esNuevo()) {
+        <button class="btn btn-outline-danger px-4" (click)="eliminar()" [disabled]="loading()">
+          Eliminar alumno
+        </button>
+      }
+    </div>
+  </div>
+}

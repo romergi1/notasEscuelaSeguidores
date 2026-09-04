@@ -9,3 +9,9 @@ Thumbs.db
 
 # Llave privada SSH - NUNCA subir
 notas-key.pem
+
+# Variables de entorno con credenciales (ver .env.example)
+.env
+
+# Copias de seguridad automáticas de los Excel antes de cada edición
+backend/database/backups/

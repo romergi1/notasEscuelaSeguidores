@@ -6,6 +6,9 @@ services:
     # El puerto interno 3000 se expone también al host por si quieres probar la API directamente
     ports:
       - "3800:3000"
+    environment:
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
 
   frontend:
     build: ./frontend
