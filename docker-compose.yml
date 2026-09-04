@@ -3,13 +3,9 @@ services:
     build: ./backend
     container_name: seguidores-backend
     restart: unless-stopped
-    # El puerto interno 3000 se expone también al host por si quieres probar la API directamente
-    ports:
-      - "3800:3000"
     environment:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - JWT_SECRET=${JWT_SECRET}
-
   frontend:
     build: ./frontend
     container_name: seguidores-frontend
@@ -17,4 +13,4 @@ services:
     depends_on:
       - backend
     ports:
-      - "2807:80"
+      - "80:80"
